@@ -1,0 +1,42 @@
+name: CI Test
+
+on:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, master, dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install
+      run: |
+        sudo add-apt-repository ppa:mhier/libboost-latest
+        sudo apt update
+        sudo apt-get install libboost-all-dev
+        sudo apt-get install -y libgtest-dev
+        sudo apt-get install -y cmake
+        sudo apt-get install -y valgrind
+        cd /usr/src/gtest/
+        sudo cmake CMakeLists.txt
+        sudo make
+        sudo cp *.a /usr/lib
+        cd $PROJECT_DIR
+    - name: prepare
+      run: |
+        PROJECT_DIR=$(pwd)
+        cat /usr/include/boost/version.hpp | grep "BOOST_LIB_VERSION"
+    - name: configure
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+    - name: building
+      run: |
+        make
+    - name: testing
+      run: |
+        valgrind tests/ut/runTests
+        python3 ../project/tests/sct/tests.py

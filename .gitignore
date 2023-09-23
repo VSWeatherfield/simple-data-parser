@@ -1,0 +1,12 @@
+.vscode/
+
+build/
+tools/
+
+client.py
+
+.clang-tidy
+.cmake-format.yaml
+
+.gitmodules
+.pre-commit-config.yaml
