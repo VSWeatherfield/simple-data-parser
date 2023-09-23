@@ -1,0 +1,6 @@
+add_subdirectory(external)
+add_subdirectory(common)
+add_subdirectory(configs)
+add_subdirectory(servers)
+add_subdirectory(services)
+add_subdirectory(storage)

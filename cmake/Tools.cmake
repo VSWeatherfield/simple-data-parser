@@ -44,11 +44,13 @@ function(add_clang_format_target)
     if(NOT ${Python_FOUND})
         return()
     endif()
+    file(GLOB_RECURSE CMAKE_MAIN_CPP "*main.cpp")
     file(GLOB_RECURSE CMAKE_FILES_CC "*/*.cc")
     file(GLOB_RECURSE CMAKE_FILES_CPP "*/*.cpp")
     file(GLOB_RECURSE CMAKE_FILES_H "*/*.h")
     file(GLOB_RECURSE CMAKE_FILES_HPP "*/*.hpp")
     set(CPP_FILES
+        ${CMAKE_MAIN_CPP}
         ${CMAKE_FILES_CC}
         ${CMAKE_FILES_CPP}
         ${CMAKE_FILES_H}
@@ -58,7 +60,7 @@ function(add_clang_format_target)
         CPP_FILES
         EXCLUDE
         REGEX
-        "${CMAKE_SOURCE_DIR}/(build|external)/.*")
+        "${CMAKE_SOURCE_DIR}/(build|src/external)/.*")
     find_program(CLANGFORMAT clang-format)
     if(CLANGFORMAT)
         message(STATUS "Added Clang Format")
