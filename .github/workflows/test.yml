@@ -2,41 +2,56 @@ name: CI Test
 
 on:
   push:
-    branches: [ main, master, dev ]
+    branches:
+      - main
+      - master
+      - dev
   pull_request:
-    branches: [ main, master, dev ]
+    branches:
+      - main
+      - master
+      - dev
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_DIR: ${{ github.workspace }}
+
     steps:
-    - uses: actions/checkout@v2
-    - name: install
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
       run: |
-        sudo add-apt-repository ppa:mhier/libboost-latest
-        sudo apt update
-        sudo apt-get install libboost-all-dev
-        sudo apt-get install -y libgtest-dev
-        sudo apt-get install -y cmake
-        sudo apt-get install -y valgrind
+        sudo add-apt-repository ppa:mhier/libboost-latest -y
+        sudo apt-get update
+        sudo apt-get install -y libboost-all-dev libgtest-dev cmake valgrind
         cd /usr/src/gtest/
         sudo cmake CMakeLists.txt
         sudo make
-        sudo cp *.a /usr/lib
-        cd $PROJECT_DIR
-    - name: prepare
+      working-directory: /usr/src/gtest/
+
+    - name: Prepare
       run: |
-        PROJECT_DIR=$(pwd)
         cat /usr/include/boost/version.hpp | grep "BOOST_LIB_VERSION"
-    - name: configure
+      working-directory: ${{ env.PROJECT_DIR }}
+
+    - name: Configure
       run: |
         mkdir build
         cd build
         cmake ..
-    - name: building
+      working-directory: ${{ env.PROJECT_DIR }}
+
+    - name: Build
       run: |
         make
-    - name: testing
+      working-directory: ${{ env.PROJECT_DIR/build }}
+
+    - name: Run Tests
       run: |
-        valgrind tests/ut/runTests
-        python3 ../project/tests/sct/tests.py
+        valgrind make test
+        python3 ../tests/scenario_tests/tests.py
+      working-directory: ${{ env.PROJECT_DIR/build }}
