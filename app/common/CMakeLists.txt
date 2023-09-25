@@ -1,5 +1,15 @@
 project(Common)
 
-add_library(${PROJECT_NAME} INTERFACE)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${PROJECT_SOURCE_DIR})
+set(HEADERS
+    ${PROJECT_SOURCE_DIR}/include/constants/Constants.hpp
+    ${PROJECT_SOURCE_DIR}/include/types/Report.hpp
+    ${PROJECT_SOURCE_DIR}/include/types/ReportFormat.hpp)
+
+set(SOURCES ${PROJECT_SOURCE_DIR}/src/types/Report.cpp
+            ${PROJECT_SOURCE_DIR}/src/types/ReportFormat.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

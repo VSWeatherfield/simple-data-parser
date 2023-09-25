@@ -1,9 +1,10 @@
 project(Storage)
 
-set(SOURCE ${PROJECT_SOURCE_DIR}/include/storage/ReportsStorage.hpp
-           ${PROJECT_SOURCE_DIR}/src/ReportsStorage.cpp)
+set(HEADERS ${PROJECT_SOURCE_DIR}/include/storage/ReportsStorage.hpp)
 
-add_library(${PROJECT_NAME} STATIC ${SOURCE})
+set(SOURCES ${PROJECT_SOURCE_DIR}/src/ReportsStorage.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} Common)
 

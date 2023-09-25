@@ -60,7 +60,7 @@ function(add_clang_format_target)
         CPP_FILES
         EXCLUDE
         REGEX
-        "${CMAKE_SOURCE_DIR}/(build|src/external)/.*")
+        "${CMAKE_SOURCE_DIR}/(build|app/external)/.*")
     find_program(CLANGFORMAT clang-format)
     if(CLANGFORMAT)
         message(STATUS "Added Clang Format")

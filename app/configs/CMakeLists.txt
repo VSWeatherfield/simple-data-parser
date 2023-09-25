@@ -6,7 +6,6 @@ find_package(
     Boost
     COMPONENTS program_options
     REQUIRED)
-
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} INTERFACE)

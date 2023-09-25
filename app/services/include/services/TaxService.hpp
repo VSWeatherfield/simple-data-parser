@@ -1,17 +1,22 @@
 #pragma once
 
-#include <string>
-#include <string_view>
+#include <memory>
 
+#include "ITaxService.hpp"
 #include "storage/ReportsStorage.hpp"
 
+namespace parsers {
+class IReportParser;
+}  // namespace parsers
+
 namespace services {
-class TaxService {
+class TaxService : public ITaxService {
    public:
-    std::string onJsonReport(const std::string_view);
-    std::string onXmlReport(const std::string_view);
+    TaxService(std::unique_ptr<parsers::IReportParser>);
+    ReportStatus onReportRequest(const std::string_view) override;
 
    private:
+    std::unique_ptr<parsers::IReportParser> reportParser;
     storage::ReportsStorage storage;
 };
 }  // namespace services

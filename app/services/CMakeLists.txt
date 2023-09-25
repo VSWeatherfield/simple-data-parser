@@ -6,16 +6,21 @@ add_subdirectory(unit_tests)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(SOURCE ${PROJECT_SOURCE_DIR}/include/services/TaxService.hpp
-           ${PROJECT_SOURCE_DIR}/src/TaxService.cpp)
+set(HEADERS
+    ${PROJECT_SOURCE_DIR}/include/services/ITaxServiceFactory.hpp
+    ${PROJECT_SOURCE_DIR}/include/services/ITaxService.hpp
+    ${PROJECT_SOURCE_DIR}/include/services/TaxServiceFactory.hpp
+    ${PROJECT_SOURCE_DIR}/include/services/TaxService.hpp)
 
-add_library(${PROJECT_NAME} STATIC ${SOURCE})
+set(SOURCES ${PROJECT_SOURCE_DIR}/src/TaxServiceFactory.cpp
+            ${PROJECT_SOURCE_DIR}/src/TaxService.cpp)
+
+add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 target_link_libraries(
     ${PROJECT_NAME}
+    Parsers
     Common
-    External
     Storage)
 
-target_include_directories(${PROJECT_NAME}
-                           INTERFACE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

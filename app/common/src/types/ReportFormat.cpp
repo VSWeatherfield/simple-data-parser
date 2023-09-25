@@ -1,14 +1,10 @@
-#pragma once
+#include "types/ReportFormat.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <string>
 
-namespace types {
-enum class ReportFormat { Json, Xml };
-}
-
-inline std::istream& operator>>(std::istream& in, types::ReportFormat& format) {
+std::istream& operator>>(std::istream& in, types::ReportFormat& format) {
     std::string token;
     in >> token;
 
