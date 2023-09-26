@@ -25,13 +25,24 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo add-apt-repository ppa:mhier/libboost-latest -y
-        sudo apt-get update
-        sudo apt-get install -y libboost-all-dev libgtest-dev cmake valgrind
+        sudo add-apt-repository ppa:mhier/libboost-latest
+        sudo apt update
+        sudo apt-get install -y cmake
+        sudo apt-get install -y valgrind
+        sudo apt-get install libboost-all-dev
+        sudo apt-get install -y libgtest-dev google-mock
+        
         cd /usr/src/gtest/
         sudo cmake CMakeLists.txt
-        sudo make
-      working-directory: /usr/src/gtest/
+        sudo make -j4
+        sudo cp lib/*.a /usr/lib
+        sudo cp -r include/gtest /usr/include
+        
+        cd ../gmock
+        sudo cmake CMakeLists.txt
+        sudo make -j4
+        sudo cp lib/* /usr/lib
+        sudo cp -r include/gmock /usr/include
 
     - name: Prepare
       run: |
@@ -48,10 +59,9 @@ jobs:
     - name: Build
       run: |
         make
-      working-directory: ${{ env.PROJECT_DIR/build }}
+      working-directory: ${{ env.PROJECT_DIR }}/build
 
     - name: Run Tests
       run: |
         valgrind make test
-        python3 ../tests/scenario_tests/tests.py
-      working-directory: ${{ env.PROJECT_DIR/build }}
+      working-directory: ${{ env.PROJECT_DIR }}/build

@@ -15,7 +15,7 @@ std::optional<types::Report> JsonReportParser::parse(
 
     return std::nullopt;
 } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
+    std::cerr << __FILE__ << ' ' << e.what() << '\n';
     return std::nullopt;
 }
 }  // namespace parsers
