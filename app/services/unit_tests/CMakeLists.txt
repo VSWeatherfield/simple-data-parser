@@ -13,7 +13,9 @@ target_link_libraries(
     GTest::GTest
     GTest::Main
     gmock
+    Mocks
     Services
+    Auth
     External
     Common)
 

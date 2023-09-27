@@ -54,6 +54,9 @@ target_link_libraries(
     ${Boost_LIBRARIES}
     Configs
     Common
+    Auth
+    Parsers
+    Services
     Servers)
 
 if(ENABLE_WARNINGS)

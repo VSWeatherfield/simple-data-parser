@@ -4,7 +4,7 @@ find_package(GTest REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
-set(SOURCE JsonReportParser_tests.cpp XmlReportParser_tests.cpp
+set(SOURCE JsonParser_tests.cpp XmlParser_tests.cpp
            ValidatedReportParser_tests.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})

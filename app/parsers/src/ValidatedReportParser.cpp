@@ -7,8 +7,8 @@
 #include <stdexcept>
 
 #include "constants/Constants.hpp"
-#include "parsers/JsonReportParser.hpp"
-#include "parsers/XmlReportParser.hpp"
+#include "parsers/JsonParser.hpp"
+#include "parsers/XmlParser.hpp"
 
 namespace {
 bool validateTaxYear(const types::Report& report) {
@@ -25,9 +25,10 @@ bool validateTaxYear(const types::Report& report) {
 
 namespace parsers {
 template <typename BaseReportParser>
-std::optional<types::Report> ValidatedReportParser<BaseReportParser>::parse(
+std::optional<types::Report>
+ValidatedReportParser<BaseReportParser>::parseReport(
     const std::string_view rawReport) const try {
-    if (const auto report = BaseReportParser::parse(rawReport)) {
+    if (const auto report = BaseReportParser::parseReport(rawReport)) {
         if (report->amount > 0.0 and validateTaxYear(*report)) {
             std::string tax = report->tax;
             boost::algorithm::to_lower(tax);
@@ -42,6 +43,6 @@ std::optional<types::Report> ValidatedReportParser<BaseReportParser>::parse(
     return std::nullopt;
 }
 
-template class ValidatedReportParser<JsonReportParser>;
-template class ValidatedReportParser<XmlReportParser>;
+template class ValidatedReportParser<JsonParser>;
+template class ValidatedReportParser<XmlParser>;
 }  // namespace parsers

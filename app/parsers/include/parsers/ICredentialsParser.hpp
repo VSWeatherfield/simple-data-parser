@@ -3,13 +3,13 @@
 #include <optional>
 #include <string_view>
 
-#include "types/Report.hpp"
+#include "types/User.hpp"
 
 namespace parsers {
-class IReportParser {
+class ICredentialsParser {
    public:
-    virtual ~IReportParser() = default;
-    virtual std::optional<types::Report> parseReport(
+    virtual ~ICredentialsParser() = default;
+    virtual std::optional<types::User> parseCredentials(
         const std::string_view) const = 0;
 };
 }  // namespace parsers
