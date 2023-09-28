@@ -64,5 +64,5 @@ jobs:
     - name: Run Tests
       run: |
         valgrind make test
-        python3 ../tests/scenario_tests/tests.py
+        seq 3 | xargs -I -- python3 ../tests/scenario_tests/tests.py
       working-directory: ${{ env.PROJECT_DIR }}/build

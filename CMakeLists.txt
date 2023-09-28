@@ -35,15 +35,8 @@ if(ENABLE_SANITIZE_ADDR OR ENABLE_SANITIZE_UNDEF)
     add_sanitizer_flags()
 endif()
 
-find_package(
-    Boost
-    COMPONENTS program_options
-    REQUIRED)
-
 add_cmake_format_target()
 add_clang_format_target()
-
-include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(${EXECUTABLE_NAME} main.cpp)
 
@@ -51,7 +44,6 @@ add_subdirectory(app)
 
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    ${Boost_LIBRARIES}
     Configs
     Common
     Auth

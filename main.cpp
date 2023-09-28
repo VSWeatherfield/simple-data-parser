@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
                                taxServiceFactory);
         }
     } catch (std::exception& e) {
-        std::cerr << e.what() << "\n";
+        std::cerr << __FILE__ << ' ' << e.what() << '\n';
         return 1;
     }
 
