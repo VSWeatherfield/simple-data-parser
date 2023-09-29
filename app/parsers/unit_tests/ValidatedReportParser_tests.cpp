@@ -9,6 +9,7 @@
 #include "parsers/JsonParser.hpp"
 #include "parsers/ValidatedReportParser.hpp"
 #include "parsers/XmlParser.hpp"
+#include "parsers/YamlParser.hpp"
 #include "types/Report.hpp"
 
 using json = nlohmann::json;

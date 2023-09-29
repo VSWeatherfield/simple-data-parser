@@ -1,4 +1,5 @@
 import json
+import yaml
 import socket
 import subprocess
 import time
@@ -12,7 +13,7 @@ OK = 'OK'
 NOK = 'NOK'
 
 # Credentials are hardcoded in the application
-LOGIN = 'Jhon Doe'
+LOGIN = 'John Doe'
 PASSWORD = "@12345"
 
 class TestsBase:
@@ -155,6 +156,50 @@ class XmlTaxReportTests(TestsBase, unittest.TestCase):
 
         self.assertEqual(response.decode(), NOK)
 
+
+class YamlTaxReportTests(TestsBase, unittest.TestCase):
+    report_format = 'yaml'
+
+    def login(self):
+        credentials = {
+            'login': LOGIN,
+            'password': PASSWORD
+        }
+        request = yaml.dump(credentials)
+        self.sock.send(request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
+
+    def test_sending_tax_report_succeeds(self):
+        self.login()
+        report_data = {
+            'payer': 1,
+            'tax': 'Corporate Income Tax',
+            'amount': 25000,
+            'year': 2020
+        }
+        request = yaml.dump(report_data)
+        self.sock.send(request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
+
+    def test_sending_tax_report_fails_due_to_missing_data(self):
+        self.login()
+        report_data = {
+            'payer': 2,
+            'tax': 'Corporate Income Tax'
+        }
+        request = yaml.dump(report_data, default_style='"')
+        self.sock.send(request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), NOK)
+
+    def test_sending_tax_report_fails_due_to_invalid_format_of_data(self):
+        self.login()
+        request = 'Something not YAML'
+        self.sock.send(request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), NOK)
 
 if __name__ == '__main__':
     unittest.main()

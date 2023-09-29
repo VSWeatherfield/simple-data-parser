@@ -46,18 +46,18 @@ TEST_F(XmlParserTests, whenNumericDataInvalid_parseReportReturnsNull) {
 
 TEST_F(XmlParserTests, whenValidData_parseCredentialsReturnsReport) {
     const std::string xmlReport =
-        "<credentials><login>Jhon Doe</login>"
+        "<credentials><login>John Doe</login>"
         "<password>123</password></credentials>";
     const std::optional<types::User> parsedUser =
         sut.parseCredentials(xmlReport);
     ASSERT_TRUE(parsedUser);
-    ASSERT_EQ(parsedUser->login.value, std::string("Jhon Doe"));
+    ASSERT_EQ(parsedUser->login.value, std::string("John Doe"));
     ASSERT_EQ(parsedUser->password.value, std::string("123"));
 }
 
 TEST_F(XmlParserTests, whenMissingFields_parseCredentialsReturnsNull) {
     const std::string xmlReport =
-        "<credentials><login>Jhon Doe</login></credentials>";
+        "<credentials><login>John Doe</login></credentials>";
     const std::optional<types::User> parsedUser =
         sut.parseCredentials(xmlReport);
     ASSERT_EQ(parsedUser, std::nullopt);

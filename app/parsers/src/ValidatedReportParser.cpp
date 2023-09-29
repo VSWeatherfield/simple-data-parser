@@ -9,6 +9,7 @@
 #include "constants/Constants.hpp"
 #include "parsers/JsonParser.hpp"
 #include "parsers/XmlParser.hpp"
+#include "parsers/YamlParser.hpp"
 
 namespace {
 bool validateTaxYear(const types::Report& report) {
@@ -45,4 +46,5 @@ ValidatedReportParser<BaseReportParser>::parseReport(
 
 template class ValidatedReportParser<JsonParser>;
 template class ValidatedReportParser<XmlParser>;
+template class ValidatedReportParser<YamlParser>;
 }  // namespace parsers

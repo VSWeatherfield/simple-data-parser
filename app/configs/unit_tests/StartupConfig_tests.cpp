@@ -10,13 +10,22 @@ char arg1[] = "--port";
 char arg2[] = "8000";
 char arg3[] = "--format";
 char arg4[] = "xml";
+char arg5[] = "yaml";
 
-TEST(StartupConfigTests, validOptions_returnsStartupConfig) {
+TEST(StartupConfigTests, validOptions_returnsXmlStartupConfig) {
     char* argv[] = {&arg0[0], &arg1[0], &arg2[0], &arg3[0], &arg4[0], NULL};
     const auto config = optionsToStartupConfig(5, argv);
     ASSERT_TRUE(config);
     ASSERT_EQ(config->port, 8000);
     ASSERT_EQ(config->format, types::ReportFormat::Xml);
+}
+
+TEST(StartupConfigTests, yamlFormat_returnsYamlStartupConfig) {
+    char* argv[] = {&arg0[0], &arg1[0], &arg2[0], &arg3[0], &arg5[0], NULL};
+    const auto config = optionsToStartupConfig(5, argv);
+    ASSERT_TRUE(config);
+    ASSERT_EQ(config->port, 8000);
+    ASSERT_EQ(config->format, types::ReportFormat::Yaml);
 }
 
 TEST(StartupConfigTests, helpOption_returnsEmptyStartupConfig) {

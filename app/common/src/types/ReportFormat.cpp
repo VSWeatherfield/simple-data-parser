@@ -14,6 +14,8 @@ std::istream& operator>>(std::istream& in, types::ReportFormat& format) {
         format = types::ReportFormat::Json;
     else if (token == "xml")
         format = types::ReportFormat::Xml;
+    else if (token == "yaml")
+        format = types::ReportFormat::Yaml;
     else
         in.setstate(std::ios_base::failbit);
 

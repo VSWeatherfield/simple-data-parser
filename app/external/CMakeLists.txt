@@ -1,5 +1,11 @@
 project(External)
 
+if(USE_CPM)
+    message(STATUS "Using CPM")
+    include(CPM)
+    cpmaddpackage("gh:jbeder/yaml-cpp#0.8.0")
+endif()
+
 set(TINYXML2_LIB ${PROJECT_SOURCE_DIR}/tinyxml2/tinyxml2.h
                  ${PROJECT_SOURCE_DIR}/tinyxml2/tinyxml2.cpp)
 

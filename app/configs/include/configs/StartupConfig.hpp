@@ -22,7 +22,7 @@ std::optional<const StartupConfig> optionsToStartupConfig(int argc,
     desc.add_options()
         ("help", "Produce help message")
         ("port", po::value<std::uint16_t>(), "Set server port")
-        ("format", po::value<types::ReportFormat>(), "Set tax report format (json or xml)");
+        ("format", po::value<types::ReportFormat>(), "Set tax report format (json, xml or yaml)");
     // clang-format on
 
     po::variables_map vm;

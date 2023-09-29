@@ -41,7 +41,7 @@ TEST_F(JsonParserTests, whenNumericDataInvalid_parseReportReturnsNull) {
 }
 
 TEST_F(JsonParserTests, whenValidData_parseCredentialsReturnsUser) {
-    const types::User user{{"Jhon Doe"}, {"Password"}};
+    const types::User user{{"John Doe"}, {"Password"}};
     const json jsonCreds = {{"login", user.login.value},
                             {"password", user.password.value}};
     const std::optional<types::User> parsedUser =
@@ -52,6 +52,6 @@ TEST_F(JsonParserTests, whenValidData_parseCredentialsReturnsUser) {
 }
 
 TEST_F(JsonParserTests, whenMissingFields_parseCredentialsReturnsNull) {
-    const json jsonCreds = {{"login", "Jhon Doe"}};
+    const json jsonCreds = {{"login", "John Doe"}};
     ASSERT_EQ(sut.parseCredentials(to_string(jsonCreds)), std::nullopt);
 }
