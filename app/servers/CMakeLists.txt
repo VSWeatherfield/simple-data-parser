@@ -1,10 +1,11 @@
 project(Servers)
 
-set(HEADERS
-    ${PROJECT_SOURCE_DIR}/interfaces/services/ITaxServiceFactory.hpp
-    ${PROJECT_SOURCE_DIR}/interfaces/services/ITaxService.hpp
-    ${PROJECT_SOURCE_DIR}/include/servers/ReportSession.hpp
-    ${PROJECT_SOURCE_DIR}/include/servers/Server.hpp)
+add_subdirectory(unit_tests)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+set(HEADERS ${PROJECT_SOURCE_DIR}/include/servers/ReportSession.hpp
+            ${PROJECT_SOURCE_DIR}/include/servers/Server.hpp)
 
 set(SOURCES ${PROJECT_SOURCE_DIR}/src/ReportSession.cpp
             ${PROJECT_SOURCE_DIR}/src/Server.cpp)
@@ -23,6 +24,4 @@ target_link_libraries(
     Common
     pthread)
 
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include
-                           ${PROJECT_SOURCE_DIR}/interfaces)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

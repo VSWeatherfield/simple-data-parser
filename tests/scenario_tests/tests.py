@@ -19,7 +19,7 @@ PASSWORD = "@12345"
 class TestsBase:
     def setUp(self):
         binary = Path(__file__).absolute().parents[3] / Path('./ServerDataParser')
-        command = 'exec {} --port {} --format {}'.format(binary, TCP_PORT, self.report_format)
+        command = 'exec {} --port {} --rf {} --sf {}'.format(binary, TCP_PORT, self.report_format, self.storage_format)
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         time.sleep(0.1)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,6 +34,7 @@ class TestsBase:
 
 class JsonTaxReportTests(TestsBase, unittest.TestCase):
     report_format = 'json'
+    storage_format = 'txt'
 
     def login(self, sock=None):
         sock = sock or self.sock
@@ -113,6 +114,7 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
 class XmlTaxReportTests(TestsBase, unittest.TestCase):
     report_format = 'xml'
+    storage_format = 'sqlite'
 
     def login(self):
         request = """<credentials><login>{}</login>
@@ -159,6 +161,7 @@ class XmlTaxReportTests(TestsBase, unittest.TestCase):
 
 class YamlTaxReportTests(TestsBase, unittest.TestCase):
     report_format = 'yaml'
+    storage_format = '-'
 
     def login(self):
         credentials = {

@@ -5,6 +5,7 @@ tools/
 bin/
 
 client.py
+logs.txt
 
 .clang-tidy
 .cmake-format.yaml

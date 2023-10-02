@@ -6,12 +6,14 @@
 #include <optional>
 
 #include "types/ReportFormat.hpp"
+#include "types/StorageFormat.hpp"
 
 namespace po = boost::program_options;
 
 struct StartupConfig {
     const std::uint16_t port;
-    const types::ReportFormat format;
+    const types::ReportFormat report_format;
+    const types::StorageFormat storage_format;
 };
 
 std::optional<const StartupConfig> optionsToStartupConfig(int argc,
@@ -22,7 +24,8 @@ std::optional<const StartupConfig> optionsToStartupConfig(int argc,
     desc.add_options()
         ("help", "Produce help message")
         ("port", po::value<std::uint16_t>(), "Set server port")
-        ("format", po::value<types::ReportFormat>(), "Set tax report format (json, xml or yaml)");
+        ("rf", po::value<types::ReportFormat>(), "Set tax report format (json, xml or yaml)")
+        ("sf", po::value<types::StorageFormat>(), "Set logs storage format (txt, sqlite or -)");
     // clang-format on
 
     po::variables_map vm;
@@ -35,5 +38,6 @@ std::optional<const StartupConfig> optionsToStartupConfig(int argc,
     }
 
     return StartupConfig{vm["port"].as<std::uint16_t>(),
-                         vm["format"].as<types::ReportFormat>()};
+                         vm["rf"].as<types::ReportFormat>(),
+                         vm["sf"].as<types::StorageFormat>()};
 }

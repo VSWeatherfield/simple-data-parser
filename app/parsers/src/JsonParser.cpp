@@ -19,7 +19,6 @@ std::optional<types::Report> JsonParser::parseReport(
     return std::nullopt;
 }
 
-
 std::optional<types::User> JsonParser::parseCredentials(
     const std::string_view rawCredentials) const try {
     if (const auto json = nlohmann::json::parse(rawCredentials);

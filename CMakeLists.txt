@@ -18,7 +18,6 @@ option(ENABLE_SANITIZE_UNDEF "Enable undefined sanitizer" ON)
 option(ENABLE_SANITIZE_LEAK "Enable leak sanitizer (GCC/Clang only)" ON)
 option(ENABLE_SANITIZE_THREAD "Enable thread sanitizer (GCC/Clang only)" OFF)
 option(ENABLE_CLANG_TIDY "Enable to add clang tidy." ON)
-option(USE_CPM "Whether to use CPM" ON)
 
 enable_testing()
 
@@ -45,12 +44,12 @@ add_subdirectory(app)
 
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    Configs
-    Common
-    Auth
-    Parsers
+    Interfaces
+    Servers
     Services
-    Servers)
+    Configs
+    Auth
+    Parsers)
 
 if(ENABLE_WARNINGS)
     target_set_warnings(${EXECUTABLE_NAME} ON OFF)

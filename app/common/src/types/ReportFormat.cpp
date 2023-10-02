@@ -4,18 +4,18 @@
 #include <iostream>
 #include <string>
 
-std::istream& operator>>(std::istream& in, types::ReportFormat& format) {
+std::istream& operator>>(std::istream& in, types::ReportFormat& report_format) {
     std::string token;
     in >> token;
 
     boost::algorithm::to_lower(token);
 
     if (token == "json")
-        format = types::ReportFormat::Json;
+        report_format = types::ReportFormat::Json;
     else if (token == "xml")
-        format = types::ReportFormat::Xml;
+        report_format = types::ReportFormat::Xml;
     else if (token == "yaml")
-        format = types::ReportFormat::Yaml;
+        report_format = types::ReportFormat::Yaml;
     else
         in.setstate(std::ios_base::failbit);
 

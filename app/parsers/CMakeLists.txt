@@ -24,7 +24,7 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    yaml-cpp::yaml-cpp
+    yaml-cpp
     Common
     External
     Interfaces)

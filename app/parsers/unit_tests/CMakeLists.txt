@@ -16,7 +16,7 @@ target_link_libraries(
     ${PROJECT_NAME}
     GTest::GTest
     GTest::Main
-    yaml-cpp::yaml-cpp
+    yaml-cpp
     Common
     External
     Parsers)
