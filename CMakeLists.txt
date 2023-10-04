@@ -44,12 +44,13 @@ add_subdirectory(app)
 
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    Interfaces
-    Servers
-    Services
-    Configs
-    Auth
-    Parsers)
+    PRIVATE Interfaces
+            Servers
+            Services
+            Storage
+            Configs
+            Auth
+            Parsers)
 
 if(ENABLE_WARNINGS)
     target_set_warnings(${EXECUTABLE_NAME} ON OFF)

@@ -1,13 +1,18 @@
 import json
 import yaml
+import random
 import socket
 import subprocess
 import time
 import unittest
 from pathlib import Path
+"""
+The following are high-level tests for our server application
+that receives and handles tax reports of specified format
+subject to user authentication and authorization.
+"""
 
 TCP_IP = 'localhost'
-TCP_PORT = 7788
 BUFFER_SIZE = 1024
 OK = 'OK'
 NOK = 'NOK'
@@ -18,12 +23,22 @@ PASSWORD = "@12345"
 
 class TestsBase:
     def setUp(self):
+        # 1. Prepare a command to start the server (bound to the provided port
+        # and accepting reports of the provided format (JSON, XML)
+
+        # TODO: pass binary path as a command line argument
         binary = Path(__file__).absolute().parents[3] / Path('./ServerDataParser')
-        command = 'exec {} --port {} --rf {} --sf {}'.format(binary, TCP_PORT, self.report_format, self.storage_format)
+        self.TCP_PORT = random.randint(3000, 8000)
+        command = 'exec {} --port {} --rf {} --sf {}'.format(binary, self.TCP_PORT, self.REPORT_FORMAT, self.STORAGE_FORMAT)
+
+        # 2. Create a subprocess and start the server
         self.process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         time.sleep(0.1)
+        # 3. Create a TCP connection to the server
+        # so that we can send reports and receive replies.
+
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((TCP_IP, TCP_PORT))
+        self.sock.connect((TCP_IP, self.TCP_PORT))
 
     def tearDown(self):
         self.sock.close()
@@ -33,8 +48,8 @@ class TestsBase:
 
 
 class JsonTaxReportTests(TestsBase, unittest.TestCase):
-    report_format = 'json'
-    storage_format = 'txt'
+    REPORT_FORMAT = 'json'
+    STORAGE_FORMAT = 'txt'
 
     def login(self, sock=None):
         sock = sock or self.sock
@@ -56,10 +71,10 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
     def test_sending_tax_reports_from_multiple_clients_succeeds(self):
         self.sock2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock2.connect((TCP_IP, TCP_PORT))
+        self.sock2.connect((TCP_IP, self.TCP_PORT))
 
         self.sock3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock3.connect((TCP_IP, TCP_PORT))
+        self.sock3.connect((TCP_IP, self.TCP_PORT))
 
         for i, sock in enumerate([self.sock, self.sock2, self.sock3]):
             self.login(sock)
@@ -92,8 +107,11 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
         self.sock.send(json.dumps({'login': LOGIN + 'x', 'password': PASSWORD + 'y'}).encode())
         self.assertEqual(self.sock.recv(BUFFER_SIZE).decode(), NOK)
 
-        self.sock.send(json.dumps({}).encode())
-        self.assertEqual(len(self.sock.recv(BUFFER_SIZE)), 0)
+        try:
+            self.sock.send(json.dumps({}).encode())
+            self.assertEqual(len(self.sock.recv(BUFFER_SIZE)), 0)
+        except ConnectionAbortedError:
+            pass
 
     def test_sending_tax_report_fails_due_to_invalid_taxpayer_id(self):
         self.login()
@@ -113,8 +131,8 @@ class JsonTaxReportTests(TestsBase, unittest.TestCase):
 
 
 class XmlTaxReportTests(TestsBase, unittest.TestCase):
-    report_format = 'xml'
-    storage_format = 'sqlite'
+    REPORT_FORMAT = 'xml'
+    STORAGE_FORMAT = 'sqlite'
 
     def login(self):
         request = """<credentials><login>{}</login>
@@ -158,10 +176,31 @@ class XmlTaxReportTests(TestsBase, unittest.TestCase):
 
         self.assertEqual(response.decode(), NOK)
 
+    def test_sending_valid_and_invalid_tax_reports(self):
+        self.login()
+        valid_request = """<report>
+                               <payer>1</payer>
+                               <tax>Corporate Income Tax</tax>
+                               <amount>25000</amount>
+                               <year>2020</year>
+                           </report>"""
+
+        self.sock.send(valid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
+
+        invalid_request = 'Something not XML'
+        self.sock.send(invalid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), NOK)
+
+        self.sock.send(valid_request.encode())
+        response = self.sock.recv(BUFFER_SIZE)
+        self.assertEqual(response.decode(), OK)
 
 class YamlTaxReportTests(TestsBase, unittest.TestCase):
-    report_format = 'yaml'
-    storage_format = '-'
+    REPORT_FORMAT = 'yaml'
+    STORAGE_FORMAT = '-'
 
     def login(self):
         credentials = {

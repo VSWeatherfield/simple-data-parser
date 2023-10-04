@@ -4,7 +4,8 @@
 #include <iostream>
 #include <string>
 
-std::istream& operator>>(std::istream& in, types::StorageFormat& storage_format) {
+std::istream& operator>>(std::istream& in,
+                         types::StorageFormat& storage_format) {
     std::string token;
     in >> token;
 

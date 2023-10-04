@@ -1,3 +1,4 @@
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <optional>
@@ -24,7 +25,7 @@ struct TaxServiceTests : testing::Test {
     StrictMock<storage::ReportStorageMock> storageMock;
     services::TaxService sut;
 
-    const std::string_view rawReport = "{}";
+    const std::string rawReport = "{}";
     const types::Report report{10, "VAT", 20, 2020};
 };
 

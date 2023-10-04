@@ -12,7 +12,7 @@ TaxService::TaxService(const types::User& user,
       reportParser{reportParser},
       reportStorage(reportStorage) {}
 
-ReportStatus TaxService::onReportRequest(const std::string_view request) {
+ReportStatus TaxService::onReportRequest(const std::string& request) {
     const auto report = reportParser.parseReport(request);
     if (report != std::nullopt and
         authManager.isAuthorized(user.login, report->payer)) {

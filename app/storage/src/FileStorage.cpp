@@ -7,8 +7,7 @@
 namespace storage {
 
 std::optional<std::ofstream> FileStorage::open() const try {
-    // file is expected and created in {PROJECT_SOURCE_DIR}/build directory,
-    // specify your path
+    // TODO: pass logs.txt path as a command line argument
     std::ofstream file("logs.txt", std::ios::app);
 
     if (!file.is_open()) {
@@ -43,6 +42,5 @@ void FileStorage::storeReport(const types::Report& report) const try {
     file.close();
 } catch (const std::exception& e) {
     std::cerr << __FILE__ << ' ' << e.what() << '\n';
-    return;
 }
 }  // namespace storage

@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.10)
-
 project(Storage)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+find_package(Boost REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(HEADERS
     ${PROJECT_SOURCE_DIR}/include/storage/StorageFactory.hpp

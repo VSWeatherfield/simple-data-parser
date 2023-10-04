@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include <string_view>
+#include <string>
 
 #include "types/Report.hpp"
 

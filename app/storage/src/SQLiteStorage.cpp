@@ -6,6 +6,7 @@
 namespace storage {
 
 std::optional<sqlite3*> SQLiteStorage::openDatabase() const try {
+    // TODO: pass binary path as a command line argument
     sqlite3* db;
 
     if (sqlite3_open("logs.sqlite", &db) != SQLITE_OK) {
@@ -103,6 +104,5 @@ void SQLiteStorage::storeReport(const types::Report& report) const try {
     sqlite3_close(db);
 } catch (const std::exception& e) {
     std::cerr << __FILE__ << ' ' << e.what() << '\n';
-    return;
 }
 }  // namespace storage

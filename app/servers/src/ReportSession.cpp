@@ -51,6 +51,8 @@ void ReportSession::start() try {
                     taxService->onReportRequest({data, length});
                 boost::asio::write(sock, boost::asio::buffer(response.data(),
                                                              response.size()));
+            } else {
+                return stop();
             }
         }
     } else {
@@ -61,10 +63,10 @@ void ReportSession::start() try {
                   << "\n";
     }
 } catch (const std::exception& e) {
-    std::cerr << e.what() << "\n";
+    std::cerr << __FILE__ << ' ' << e.what() << '\n';
 }
 
-void ReportSession::stop() {
+void ReportSession::stop() try {
     boost::system::error_code ec;
     sock.shutdown(
         boost::asio::ip::tcp::socket::shutdown_both);  // Disable sends and
@@ -79,5 +81,7 @@ void ReportSession::stop() {
         std::cerr << __FILE__ << " Error when shutting down socket " << ec
                   << '\n';
     }
+} catch (const std::exception& e) {
+    std::cerr << __FILE__ << " " << __LINE__ << " " << e.what() << std::endl;
 }
 }  // namespace servers

@@ -8,7 +8,7 @@
 namespace parsers {
 
 std::optional<types::Report> YamlParser::parseReport(
-    const std::string_view rawReport) const {
+    const std::string& rawReport) const {
     try {
         const YAML::Node node = YAML::Load(rawReport.data());
 
@@ -29,7 +29,7 @@ std::optional<types::Report> YamlParser::parseReport(
 }
 
 std::optional<types::User> YamlParser::parseCredentials(
-    const std::string_view rawCredentials) const {
+    const std::string& rawCredentials) const {
     try {
         const YAML::Node node = YAML::Load(rawCredentials.data());
 

@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.10)
-
 project(Parsers)
 
 add_subdirectory(unit_tests)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+find_package(Boost REQUIRED)
+
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(HEADERS
     ${PROJECT_SOURCE_DIR}/include/parsers/ParsersFactory.hpp
@@ -24,9 +24,9 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    yaml-cpp
-    Common
-    External
-    Interfaces)
+    PRIVATE yaml-cpp
+            Common
+            External
+            Interfaces)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

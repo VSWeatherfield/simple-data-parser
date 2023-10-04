@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include <string_view>
+#include <string>
 
 #include "types/User.hpp"
 
@@ -10,6 +10,6 @@ class ICredentialsParser {
    public:
     virtual ~ICredentialsParser() = default;
     virtual std::optional<types::User> parseCredentials(
-        const std::string_view) const = 0;
+        const std::string&) const = 0;
 };
 }  // namespace parsers

@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
 project(Services)
 
 add_subdirectory(unit_tests)
@@ -16,9 +14,9 @@ add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    Common
-    Interfaces
-    Servers
-    Storage)
+    PRIVATE Interfaces
+            Common
+            Storage
+            Servers)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)

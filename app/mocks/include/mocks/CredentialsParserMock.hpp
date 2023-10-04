@@ -6,6 +6,6 @@ namespace parsers {
 class CredentialsParserMock : public parsers::ICredentialsParser {
    public:
     MOCK_CONST_METHOD1(parseCredentials,
-                       std::optional<types::User>(const std::string_view));
+                       std::optional<types::User>(const std::string&));
 };
 }  // namespace parsers
